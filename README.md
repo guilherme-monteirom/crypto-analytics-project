@@ -23,7 +23,7 @@ o objetivo desde projeto é construir uma pipeline de dados voltada para Analyti
 ## Arquitetura Atual (V1)
 
 CoinGecko API
-→ Python (Requests)
+→ coleta_crypto.py
 → Pandas
 → SQLite
 
@@ -56,7 +56,7 @@ CoinGecko API
 ```text
 crypto-project/
 |
-|___ crypto_analysis.ipynb
+|___ coleta_crypto.py
 |___ .env
 |___ .gitignore
 |___ README.md
