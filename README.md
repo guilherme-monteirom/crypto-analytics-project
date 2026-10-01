@@ -2,7 +2,9 @@
 
 Projeto desenvolvido para coletar, armazenar e analisar dados do mercado de criptomoedas utilizando uma arquitetura de dados evolutiva.
 
-A solução realiza a extração de dados através da API da CoinGecko, transforma as informações utilizando Python e Pandas e armazena o histórico em um banco SQLite para posterior análise.
+A solução realiza a extração automaticamente de dados através da API da CoinGecko, transforma as informações utilizando Python e Pandas e armazena o histórico em um banco SQLite para posterior análise.
+
+A coleta é executada automaticamente em um período de 15 em 15 minutos via Windows Task Scheduler, alimentando o pipeline sem necessidade de intervenção manual.
 
 ---
 
@@ -56,12 +58,23 @@ CoinGecko API
 ```text
 crypto-project/
 |
-|___ coleta_crypto.py
-|___ .env
-|___ .gitignore
+|___ src/
+|     |__coleta_crypto.py
+|
+|___ data/
+|
+|___ notebook/
+|
 |___ README.md
-|___ crypto_analytics.db
+|___ .gitignore
 ```
+Os seguintes arquivos são mantidos apenas localmente e não enviados ao GitHub:
+
+- `.env`
+- `crypto_analytics.db`
+- `task_screduler.log`
+- `coleta.bat`
+- `notebooks de backup`
 
 ---
 

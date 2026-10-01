@@ -1,9 +1,19 @@
 .env
 
 *.db
+data
 
 __pycache__/
 
 .ipynb_checkpoint/
 
 crypto_analysis_backup.ipynb
+notebook
+
+executar_coleta.bat
+
+task_screduler.log
+*.log
+logs
+
+*bat
