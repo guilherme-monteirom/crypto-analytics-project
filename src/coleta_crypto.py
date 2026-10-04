@@ -1,7 +1,5 @@
 # Projeto Crypto Analytics
 
-# IMPORTS
-
 import datetime
 import requests
 import pandas as pd
