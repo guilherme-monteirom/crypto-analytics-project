@@ -11,6 +11,10 @@ password = os.getenv("password")
 port = os.getenv("port")
 coingecko_apikey = os.getenv("coingecko_apikey")
 
+requisicao = requests.get(f"https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana,ripples,cardano,binancecoin&vs_currencies=usd,eur,brl&include_market_cap=true&include_24hr_change=true/x-cg-demo-api-key:{coingecko_apikey}")
+
+data = requisicao.json()
+
 try:
     conexao = psycopg2.connect(
         host = "localhost",
@@ -23,10 +27,6 @@ try:
 except Exception as e:
     print(repr(e))
 
-requisicao = requests.get(f"https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana,ripples,cardano,binancecoin&vs_currencies=usd,eur,brl&include_market_cap=true&include_24hr_change=true/x-cg-demo-api-key:{coingecko_apikey}")
-
-dado = requisicao.json()
-
 cursor = conexao.cursor()
 
 cursor.execute(
@@ -34,7 +34,7 @@ cursor.execute(
     INSERT INTO crypto_raw (data_coleta, payload)
     VALUES (NOW(), %s);
     """,
-    (Json(dado),)
+    (Json(data),)
 )
 
 conexao.commit()
