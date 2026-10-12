@@ -6,9 +6,9 @@ st.set_page_config(
 )
 
 pg = st.navigation([
-    st.Page("pages/main_page.py", title="Dashboard"),
-    st.Page("pages/page_2.py", title="Movimentações", default=True),
-    st.Page("pages/page_3.py", title="Mercado")
+    st.Page("pages/dashboard.py", title="Dashboard"),
+    st.Page("pages/movimentacoes.py", title="Movimentações", default=True),
+    st.Page("pages/mercado.py", title="Mercado")
 ])
 
 
