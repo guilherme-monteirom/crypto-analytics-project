@@ -2,7 +2,8 @@ import streamlit as st
 
 st.set_page_config(
     page_title="Crypto Analytics",
-    page_icon=":chart_with_upwards_trend:"
+    page_icon=":chart_with_upwards_trend:",
+    layout="wide"
 )
 
 pg = st.navigation([
@@ -11,6 +12,6 @@ pg = st.navigation([
     st.Page("pages/mercado.py", title="Mercado")
 ])
 
-
+pg.run()
 
 
