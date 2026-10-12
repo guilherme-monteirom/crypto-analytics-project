@@ -35,8 +35,6 @@ with conexao.cursor() as cursor:
 
     ultimo_id_processado = cursor.fetchone()[0]
 
-print(ultimo_id_processado)
-
 query = f"""SELECT * FROM crypto_raw
     WHERE id > {ultimo_id_processado};"""
 
