@@ -1,5 +1,8 @@
 import streamlit as st
 from datetime import date
+import psycopg2
+from dotenv import load_dotenv
+import os
 
 st.markdown("""
 <style>
@@ -26,7 +29,7 @@ with st.form("form_operacao"):
     with col1:
         selected_operation = st.selectbox(
             "Tipo:",
-            ["Compra", "Venda"]
+            ["Compra", "Venda"],
         )
 
     with col2:
@@ -91,14 +94,62 @@ if submitted:
     if quantidade <= 0 or preco_unitario <= 0:
         st.error("Informe uma quantidade e um preço maiores que zero.")
     else:
-        st.success("Operação registrada com sucesso!")
 
-        st.write("### Resumo da operação")
-        st.write(f"**Tipo:** {selected_operation}")
-        st.write(f"**Ativo:** {selected_ticker}")
-        st.write(f"**Quantidade:** {quantidade}")
-        st.write(f"**Preço unitário:** R$ {preco_unitario:,.2f}")
-        st.write(f"**Valor total:** R$ {valor_total:,.2f}")
-        st.write(f"**Data:** {data_operacao.strftime('%d/%m/%Y')}")
-        st.write(f"**Corretora:** {corretora}")
-        st.write(f"**Observação:** {observacao or 'Nenhuma'}")
+        load_dotenv()
+        user = os.getenv("user")
+        password = os.getenv("password")
+        port = os.getenv("port")
+
+        query = f"""
+        INSERT INTO tb_movimentacoes (
+            tipo, ticker, quantidade, preco_unitario, data_operacao, corretora, observacao)
+        VALUES (
+            %s, %s, %s, %s, %s, %s, %s)"""
+        
+        try:
+            conexao = psycopg2.connect(
+                host= "localhost",
+                database= "crypto_analytics",
+                user= user,
+                password= password,
+                port= port
+            )
+            print("Conectado com sucesso!")
+
+            with conexao.cursor() as cursor:
+                cursor.execute(query,
+                (
+                    selected_operation,
+                    selected_ticker,
+                    quantidade,
+                    preco_unitario,
+                    data_operacao,
+                    corretora,
+                    observacao
+                )
+            )
+            print("Carga concluída")
+
+            conexao.commit()
+            cursor.close()
+            conexao.close()
+        
+            st.success("Operação registrada com sucesso!")
+
+            st.write("### Resumo da operação")
+            st.write(f"**Tipo:** {selected_operation}")
+            st.write(f"**Ativo:** {selected_ticker}")
+            st.write(f"**Quantidade:** {quantidade}")
+            st.write(f"**Preço unitário:** R$ {preco_unitario:,.2f}")
+            st.write(f"**Valor total:** R$ {valor_total:,.2f}")
+            st.write(f"**Data:** {data_operacao.strftime('%d/%m/%Y')}")
+            st.write(f"**Corretora:** {corretora}")
+            st.write(f"**Observação:** {observacao or 'Nenhuma'}")
+
+        except Exception as e:
+            print(repr(e))
+
+            cursor.close()
+            conexao.close()
+            
+            st.error("Falha no registro da operação, tente novamente mais tarde!")
