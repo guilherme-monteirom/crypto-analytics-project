@@ -1,125 +1,263 @@
-# Crypto Analytics Project
+# 🚀 Crypto Analytics Platform
 
-Projeto desenvolvido para coletar, armazenar e analisar dados do mercado de criptomoedas utilizando uma arquitetura de dados evolutiva.
+Projeto pessoal desenvolvido para estudar e aplicar conceitos de Analytics, Analytics Engineering e Engenharia de Dados utilizando dados do mercado de criptomoedas.
 
-A solução realiza a extração automaticamente de dados através da API da CoinGecko, transforma as informações utilizando Python e Pandas e armazena o histórico em um banco SQLite para posterior análise.
-
-A coleta é executada automaticamente em um período de 15 em 15 minutos via Windows Task Scheduler, alimentando o pipeline sem necessidade de intervenção manual.
+A solução realiza a coleta automática de dados através da API da CoinGecko, armazena informações em PostgreSQL utilizando uma arquitetura em camadas (RAW e SILVER), aplica transformações com Python e Pandas e disponibiliza uma interface interativa em Streamlit para registro de movimentações e futura análise patrimonial.
 
 ---
 
-## objetivo
+# 🎯 Objetivo
 
-o objetivo desde projeto é construir uma pipeline de dados voltada para Analytics, contemplando:
+O objetivo deste projeto é construir uma solução analítica completa para praticar:
 
-- Consumir dados de APIs REST
-- Construir pipelines de ingestão e transformação de dados
-- Armazenar históricos para análises temporais
-- Aplicar SQL em bases geradas por APIs
-- Desenvolver dashboards e métricas analíticas
-- Evoluir gradualmente para PostgreSQL e Azure
-- Aplicar conceitos de ETL, ELT e Arquitetura Moderna de Dados
-
----
-
-## Arquitetura Atual (V1)
-
-CoinGecko API
-→ coleta_crypto.py
-→ Pandas
-→ SQLite
-
-1. Coleta dos dados da API CoinGecko
-2. Conversão para DataFrame
-3. Tratamento e transformação dos dados
-4. Persistência em banco SQLite
-
-## Dados coletados
-
-- Preço das criptomoedas
-- Market Cap
-- Moeda de referência (USD, EUR e BRL)
-- Data e hora da coleta
-- Ticker dos ativos
-
-## Tecnologias Utilizadas
-
-- Python
-- Requests
-- Pandas
-- SQLite
 - SQL
-- Git
+- Python
+- Pandas
+- PostgreSQL
+- APIs REST
+- Git e GitHub
+- ETL / ELT
+- Arquitetura Medallion
+- Analytics Engineering
+- Streamlit
+- Visualização e análise de dados
+
+Além do aprendizado técnico, o projeto está evoluindo para um Portfolio Analytics capaz de registrar operações, acompanhar patrimônio e analisar a evolução da carteira ao longo do tempo.
 
 ---
 
-## Estrutura do Projeto
+# 🏗️ Arquitetura Atual
 
 ```text
-crypto-project/
-|
-|___ src/
-|     |__coleta_crypto.py
-|
-|___ data/
-|
-|___ notebook/
-|
-|___ README.md
-|___ .gitignore
+CoinGecko API
+        │
+        ▼
+RAW Layer (PostgreSQL + JSONB)
+        │
+        ▼
+Transformações em Pandas
+        │
+        ▼
+SILVER Layer (PostgreSQL)
+        │
+        ▼
+Streamlit Application
+        │
+        ▼
+Portfolio Analytics
 ```
-Os seguintes arquivos são mantidos apenas localmente e não enviados ao GitHub:
+
+---
+
+# 📦 Camadas do Projeto
+
+## RAW Layer
+
+Responsável por armazenar os dados exatamente como retornados pela API.
+
+Características:
+
+- PostgreSQL
+- Coluna JSONB
+- Histórico completo de coletas
+- Sem transformação de negócio
+- Persistência incremental
+
+---
+
+## SILVER Layer
+
+Responsável pela transformação e padronização dos dados.
+
+Características:
+
+- Estrutura tabular
+- Dados normalizados
+- Inclusão de rastreabilidade através do `id_raw`
+- Carga incremental
+- Transformações realizadas com Pandas
+
+---
+
+## Portfolio Operations
+
+Módulo responsável pelo registro das operações da carteira.
+
+Funcionalidades atuais:
+
+- Cadastro de compras
+- Cadastro de vendas
+- Persistência em PostgreSQL
+- Validação de campos
+- Resumo da operação registrada
+- Integração com Streamlit
+
+---
+
+# 🔄 Carga Incremental
+
+O processamento da camada SILVER utiliza carga incremental.
+
+Fluxo:
+
+```text
+Consultar maior id_raw processado
+        │
+        ▼
+Ler apenas novos registros da RAW
+        │
+        ▼
+Transformar em Pandas
+        │
+        ▼
+Inserir na SILVER
+```
+
+Isso evita reprocessamento desnecessário e permite crescimento escalável da base de dados.
+
+---
+
+# 📊 Dados Coletados
+
+Atualmente o projeto armazena:
+
+- Preço dos ativos
+- Market Cap
+- Valores em USD
+- Valores em EUR
+- Valores em BRL
+- Data e hora da coleta
+- Identificação dos ativos
+- Histórico temporal
+
+---
+
+# 🖥️ Aplicação Streamlit
+
+O projeto possui uma aplicação web desenvolvida em Streamlit.
+
+Módulos atuais:
+
+- Dashboard
+- Movimentações
+- Mercado
+
+Em evolução para:
+
+- Carteira
+- Patrimônio
+- Rentabilidade
+- Performance histórica
+- Indicadores analíticos
+
+---
+
+# 🛠️ Tecnologias Utilizadas
+
+### Engenharia e Analytics
+
+- Python
+- Pandas
+- SQL
+- PostgreSQL
+- JSONB
+- Requests
+- Psycopg2
+
+### Aplicação
+
+- Streamlit
+
+### Segurança
+
+- python-dotenv
+- Variáveis de ambiente (.env)
+
+### Versionamento
+
+- Git
+- GitHub
+
+---
+
+# 📁 Estrutura Atual
+
+```text
+crypto-analytics/
+│
+├── app.py
+│
+├── pages/
+│   ├── dashboard.py
+│   ├── movimentacoes.py
+│   └── mercado.py
+│
+├── src/
+│   ├── coleta_crypto_raw.py
+│   └── transform_silver.py
+│
+├── notebooks/
+│
+├── .streamlit/
+│   └── config.toml
+│
+├── README.md
+├── .gitignore
+└── .env
+```
+
+---
+
+# 🔒 Segurança
+
+Nenhuma credencial é armazenada diretamente no código.
+
+O projeto utiliza:
 
 - `.env`
-- `crypto_analytics.db`
-- `task_screduler.log`
-- `coleta.bat`
-- `notebooks de backup`
+- `python-dotenv`
+- `os.getenv()`
+
+Arquivos sensíveis são ignorados automaticamente através do `.gitignore`.
 
 ---
 
-## Segurança
+# 🚧 Roadmap
 
-As credenciais da API não são armazenadas diretamente no código.
+## Próximas Evoluções
 
-As chaves são carregadas através de variáveis de ambiente utilizando:
+### Portfolio Analytics
 
-- .env
-- python-dotenv
-- os.getenv()
+- Cálculo de posição por ativo
+- Preço médio
+- Patrimônio atual
+- Rentabilidade
+- Evolução temporal da carteira
 
-O arquivo .env é ignorado pelo Git através do arquivo .gitignore.
+### Dashboard Analytics
+
+- KPIs de patrimônio
+- Distribuição por ativo
+- Evolução histórica
+- Indicadores de desempenho
+
+### Camada GOLD
+
+- Métricas agregadas
+- Modelagem para consumo analítico
+- Integração futura com Power BI
+
+### Cloud & Deploy
+
+- Azure
+- Hospedagem da aplicação
+- Evolução para arquitetura em nuvem
 
 ---
 
-## Próximos Passos
+# 👨‍💻 Autor
 
-### V2 - Analytics Layer
-- Automatizar a coleta de dados
-- Conectar o banco SQLite ao Power BI
-- Criar dashboard de acompanhamento
-- Implementar métricas em DAX
-- Analisar evolução histórica das criptomoedas
-- Market Cap
+**Guilherme Monteiro Morgado de Melo**
 
-### V3 - Data Engineering Foundation
-- Migrar armazenamento de SQLite para PostgreSQL
-- Implementar modelagem de dados mais robusta
-- Adicionar validações de qualidade de dados
-- Padronizar estrutura do projeto em múltiplos arquivos Python
+Projeto criado para desenvolvimento profissional com foco em Analytics, Analytics Engineering e Engenharia de Dados.
 
-### V4 - Pipeline Evolution
-- Adicionar múltiplas APIs
-- Implementar carregamento incremental
-- Criar sistema de logging e tratamento de erros
-- Automatizar capturar periódicas
-
-### V5 - Cloud & Modern Data Architecture
-- Migrar pipeline para Azure
-- Utilizar armazenamento em nuvem
-- Implementar pipeline automatizada
-- Conceitos de Data Lake e Lakehouse
-
-## Autor
-
-Guilherme Monteiro Morgado de Melo
