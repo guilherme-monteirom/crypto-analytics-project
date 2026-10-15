@@ -133,7 +133,7 @@ if submitted:
             conexao.commit()
             cursor.close()
             conexao.close()
-        
+
             st.success("Operação registrada com sucesso!")
 
             st.write("### Resumo da operação")
@@ -151,5 +151,5 @@ if submitted:
 
             cursor.close()
             conexao.close()
-            
+
             st.error("Falha no registro da operação, tente novamente mais tarde!")

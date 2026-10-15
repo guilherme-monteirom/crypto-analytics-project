@@ -1,8 +1,17 @@
 [theme]
-font = "'Work Sans':https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&display=swap"
-baseRadius = "12px"
+base = "light"
+primaryColor = "#7C3AED"
+backgroundColor = "#F8FAFC"
+secondaryBackgroundColor = "#FFFFFF"
+textColor = "#0F172A"
+font = "sans serif"
+baseRadius = "0.75rem"
+borderColor = "#E2E8F0"
+showWidgetBorder = true
 
 [theme.sidebar]
-backgroundColor = "#1e293b"
-textColor = "#f1f5f9"
-secondaryBackgroundColor = "#334155"
+backgroundColor = "#0F172A"
+secondaryBackgroundColor = "#1E293B"
+textColor = "#F8FAFC"
+primaryColor = "#A78BFA"
+borderColor = "#334155"
